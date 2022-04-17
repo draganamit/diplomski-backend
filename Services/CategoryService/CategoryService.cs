@@ -14,15 +14,23 @@ namespace diplomski_backend.Services.CategoryService
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
+       
         public CategoryService(IMapper mapper, DataContext context)
         {
+          
             _context = context;
             _mapper = mapper;
 
         }
-        public Task<ServiceResponse<List<GetCategoryDto>>> AddCategory(AddCategoryDto newCategory)
+        public async Task<ServiceResponse<List<GetCategoryDto>>> AddCategory(AddCategoryDto newCategory)
         {
-            throw new System.NotImplementedException();
+            ServiceResponse<List<GetCategoryDto>> response = new ServiceResponse<List<GetCategoryDto>>();
+            Category category = _mapper.Map<Category>(newCategory);
+            await _context.Category.AddAsync(category);
+            await _context.SaveChangesAsync();
+            List<Category> dbCategories = await _context.Category.ToListAsync();
+            response.Data = _mapper.Map<List<GetCategoryDto>>(dbCategories).ToList();
+            return response;
         }
 
         public async Task<ServiceResponse<List<GetCategoryDto>>> GetAllCategories()
@@ -33,14 +41,23 @@ namespace diplomski_backend.Services.CategoryService
             return response;
         }
 
-        public Task<ServiceResponse<GetCategoryDto>> GetCategoryById(int id)
+        public async Task<ServiceResponse<GetCategoryDto>> GetCategoryById(int id)
         {
-            throw new System.NotImplementedException();
+            ServiceResponse<GetCategoryDto> response = new ServiceResponse<GetCategoryDto>();
+            Category category = await _context.Category.FirstOrDefaultAsync(x => x.Id == id);
+            response.Data = _mapper.Map<GetCategoryDto>(category);
+            return response;
         }
 
-        public Task<ServiceResponse<GetCategoryDto>> UpdateCategory(UpdateCategoryDto updatedCategory)
+        public async Task<ServiceResponse<GetCategoryDto>> UpdateCategory(UpdateCategoryDto updatedCategory)
         {
-            throw new System.NotImplementedException();
+            ServiceResponse<GetCategoryDto> response = new ServiceResponse<GetCategoryDto>();
+            Category category = await _context.Category.FirstOrDefaultAsync(x => x.Id == updatedCategory.Id);
+            category.Name = updatedCategory.Name;
+             _context.Category.Update(category);
+            await _context.SaveChangesAsync();
+            response.Data = _mapper.Map<GetCategoryDto>(category);
+            return response;
         }
     }
 }
