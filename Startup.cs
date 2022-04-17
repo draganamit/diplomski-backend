@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using diplomski_backend.Services.CategoryService;
 
 namespace diplomski_backend
 {
@@ -34,6 +35,7 @@ namespace diplomski_backend
             services.AddControllers();
             services.AddAutoMapper(typeof (Startup));
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -61,9 +63,12 @@ namespace diplomski_backend
             //app.UseHttpsRedirection();
 
             app.UseRouting();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseCors("MyPolicy");
 
             app.UseEndpoints(endpoints =>
             {
