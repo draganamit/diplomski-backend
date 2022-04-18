@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using diplomski_backend.Data;
 using diplomski_backend.Dtos;
@@ -41,5 +42,48 @@ namespace diplomski_backend.Controllers
            return Ok(response);
        }
 
+       [HttpGet("GetAll")]
+       public async Task<IActionResult> GetAllUsers()
+       {
+           ServiceResponse<List<GetUserDto>> response = await _authRepo.GetAllUsers();
+           if(response.Data == null)
+           {
+               return NotFound(response);
+           }
+           return Ok(response);
+       }
+
+       [HttpGet("{id}")]
+       public async Task<IActionResult> GetUserById(int id)
+       {
+           ServiceResponse<GetUserDto> response = await _authRepo.GetUserById(id);
+           if(response.Data == null)
+           {
+               return NotFound(response);
+           }
+           return Ok(response);
+       }
+
+       [HttpPut]
+       public async Task<IActionResult> UpdateUser(UpdateUserDto updatedUser)
+       {
+           ServiceResponse<GetUserDto> response = await _authRepo.UpdateUser(updatedUser);
+           if(response.Data == null)
+           {
+               return NotFound(response);
+           }
+           return Ok(response);
+       }
+
+        [HttpDelete("{id}")]
+       public async Task<IActionResult> DeleteUser(int id)
+       {
+           ServiceResponse<List<GetUserDto>> response = await _authRepo.DeleteUser(id);
+           if(response.Data == null)
+           {
+               return NotFound(response);
+           }
+           return Ok(response);
+       }
     }
 }

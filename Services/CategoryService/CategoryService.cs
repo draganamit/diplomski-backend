@@ -33,6 +33,27 @@ namespace diplomski_backend.Services.CategoryService
             return response;
         }
 
+        public async Task<ServiceResponse<List<GetCategoryDto>>> DeleteCategory(int id)
+        {
+            ServiceResponse<List<GetCategoryDto>> response = new ServiceResponse<List<GetCategoryDto>>();
+            Category category = await _context.Category.FirstOrDefaultAsync(x => x.Id == id);
+            List<Product> products = await _context.Product.Where(x => x.Category.Id == category.Id).ToListAsync();
+            if(products.Count == 0)
+            {
+                 _context.Category.Remove(category);
+                 await _context.SaveChangesAsync();
+
+                List<Category> dbCategories = await _context.Category.ToListAsync();
+                 response.Data = _mapper.Map<List<GetCategoryDto>>(dbCategories).ToList();
+            }
+            else
+            {
+                response.Success=false;
+                response.Message = "You can not delete a category.";
+            }
+            return response;
+        }
+
         public async Task<ServiceResponse<List<GetCategoryDto>>> GetAllCategories()
         {
             ServiceResponse<List<GetCategoryDto>> response = new ServiceResponse<List<GetCategoryDto>>();

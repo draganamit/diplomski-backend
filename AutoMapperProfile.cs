@@ -1,4 +1,5 @@
 using AutoMapper;
+using diplomski_backend.Dtos;
 using diplomski_backend.Dtos.Category;
 using diplomski_backend.Models;
 
@@ -10,6 +11,7 @@ namespace backend_user_post
         {
             CreateMap<Category, GetCategoryDto>();
             CreateMap<AddCategoryDto, Category>();
+            CreateMap<User, GetUserDto>();
         }
     }
 }
