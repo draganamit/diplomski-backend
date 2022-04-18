@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using diplomski_backend.Dtos;
 using diplomski_backend.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,13 +20,16 @@ namespace diplomski_backend.Data
         private readonly DataContext _context;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
-        public AuthRepository(DataContext context, IConfiguration configuration, IMapper mapper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AuthRepository(DataContext context, IConfiguration configuration, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
             _configuration = configuration;
             _context = context;
 
         }
+        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         public async Task<ServiceResponse<string>> Login(string email, string password)
         {
@@ -165,11 +169,55 @@ namespace diplomski_backend.Data
         {
             ServiceResponse<List<GetUserDto>> response = new ServiceResponse<List<GetUserDto>>();
             User user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
-             _context.User.Remove(user);
-             await _context.SaveChangesAsync();
-             List<User> users = await _context.User.ToListAsync();
-             response.Data = _mapper.Map<List<GetUserDto>>(users).ToList();
-             return response;
+            _context.User.Remove(user);
+            await _context.SaveChangesAsync();
+            List<User> users = await _context.User.ToListAsync();
+            response.Data = _mapper.Map<List<GetUserDto>>(users).ToList();
+            return response;
+        }
+
+        public async Task<ServiceResponse<GetUserDto>> UpdateUserByUser(UpdateUserDto updatedUser)
+        {
+            ServiceResponse<GetUserDto> response = new ServiceResponse<GetUserDto>();
+            try
+            {
+                User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
+                user.Name = updatedUser.Name;
+                user.Surname = updatedUser.Surname;
+                user.Location = updatedUser.Location;
+                _context.User.Update(user);
+                await _context.SaveChangesAsync();
+
+                response.Data = _mapper.Map<GetUserDto>(user);
+
+            }
+            catch(Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+
+        }
+
+        public async Task<ServiceResponse<List<GetUserDto>>> DeleteUserByUser()
+        {
+            ServiceResponse<List<GetUserDto>> response = new ServiceResponse<List<GetUserDto>>();
+            try
+            {
+                User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
+                _context.User.Remove(user);
+                await _context.SaveChangesAsync();
+                
+                List<User> users = await _context.User.ToListAsync();
+                response.Data = _mapper.Map<List<GetUserDto>>(users).ToList();
+            }
+            catch(Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
         }
     }
 }

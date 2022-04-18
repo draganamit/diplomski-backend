@@ -85,5 +85,27 @@ namespace diplomski_backend.Controllers
            }
            return Ok(response);
        }
+
+       [HttpPut("UpdateByUser")]
+       public async Task<IActionResult> UpdateUserByUser(UpdateUserDto updateUserDto)
+       {
+           ServiceResponse<GetUserDto> response = await _authRepo.UpdateUserByUser(updateUserDto);
+           if(response.Data == null)
+           {
+               return NotFound(response);
+           }
+           return Ok(response);
+       }
+
+       [HttpDelete("DeleteByUser")]
+       public async Task<IActionResult> DeleteUserByUser()
+       {
+           ServiceResponse<List<GetUserDto>> response = await _authRepo.DeleteUserByUser();
+           if(response.Data == null)
+           {
+               return NotFound(response);
+           }
+           return Ok(response);
+       }
     }
 }
