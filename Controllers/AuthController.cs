@@ -107,5 +107,11 @@ namespace diplomski_backend.Controllers
            }
            return Ok(response);
        }
+
+       [HttpPut("UpdatePassword")]
+       public async Task UpdatePassword(UpdatePasswordDto updatedPassword)
+       {
+          await _authRepo.UpdatePassword(updatedPassword.OldPassword, updatedPassword.NewPassword);
+       }
     }
 }

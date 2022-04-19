@@ -15,5 +15,6 @@ namespace diplomski_backend.Data
         Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id);
         Task<ServiceResponse<GetUserDto>> UpdateUserByUser(UpdateUserDto updatedUser);
         Task<ServiceResponse<List<GetUserDto>>> DeleteUserByUser();
+        Task UpdatePassword(string oldPassword,string newPassword);
     }
 }

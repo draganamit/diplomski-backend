@@ -155,24 +155,40 @@ namespace diplomski_backend.Data
         public async Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser)
         {
             ServiceResponse<GetUserDto> response = new ServiceResponse<GetUserDto>();
-            User user = await _context.User.FirstOrDefaultAsync(x => x.Id == updatedUser.Id);
-            user.Name = updatedUser.Name;
-            user.Surname = updatedUser.Surname;
-            user.Location = updatedUser.Location;
-            _context.User.Update(user);
-            await _context.SaveChangesAsync();
-            response.Data = _mapper.Map<GetUserDto>(user);
+            try
+            {
+                User user = await _context.User.FirstOrDefaultAsync(x => x.Id == updatedUser.Id);
+                user.Name = updatedUser.Name;
+                user.Surname = updatedUser.Surname;
+                user.Location = updatedUser.Location;
+                _context.User.Update(user);
+                await _context.SaveChangesAsync();
+                response.Data = _mapper.Map<GetUserDto>(user);
+            }
+            catch(Exception ex)
+            {
+                response.Success=false;
+                response.Message = ex.Message;
+            }
             return response;
         }
 
         public async Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id)
         {
             ServiceResponse<List<GetUserDto>> response = new ServiceResponse<List<GetUserDto>>();
-            User user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
-            List<User> users = await _context.User.ToListAsync();
-            response.Data = _mapper.Map<List<GetUserDto>>(users).ToList();
+            try
+            {
+                 User user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
+                _context.User.Remove(user);
+                await _context.SaveChangesAsync();
+                List<User> users = await _context.User.ToListAsync();
+                response.Data = _mapper.Map<List<GetUserDto>>(users).ToList();
+            }
+           catch(Exception ex)
+           {
+               response.Success = false;
+               response.Message = ex.Message;
+           }
             return response;
         }
 
@@ -218,6 +234,19 @@ namespace diplomski_backend.Data
                 response.Message = ex.Message;
             }
             return response;
+        }
+
+        public async Task UpdatePassword(string oldPassword, string newPassword)
+        {
+            User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
+            if(VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
+            {
+                CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                 _context.User.Update(user);
+                 await _context.SaveChangesAsync();
+            }
         }
     }
 }

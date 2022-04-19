@@ -10,6 +10,6 @@ namespace diplomski_backend.Dtos
         public string Surname { get; set; }
         public string Location { get; set; }
         public string Email { get; set; }
-         public List<Product> Products { get; set; }
+        public List<Product> Products { get; set; }
     }
 }
