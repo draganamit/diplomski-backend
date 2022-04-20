@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using diplomski_backend.Data;
-using diplomski_backend.Dtos.Category;
+using diplomski_backend.Dtos.Categories;
 using diplomski_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

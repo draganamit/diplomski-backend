@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using diplomski_backend.Dtos.Category;
+using diplomski_backend.Dtos.Categories;
 using diplomski_backend.Models;
 
 namespace diplomski_backend.Services.CategoryService

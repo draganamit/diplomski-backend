@@ -1,4 +1,4 @@
-namespace diplomski_backend.Dtos.Category
+namespace diplomski_backend.Dtos.Categories
 {
     public class AddCategoryDto
     {

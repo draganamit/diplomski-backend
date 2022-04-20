@@ -238,15 +238,16 @@ namespace diplomski_backend.Data
 
         public async Task UpdatePassword(string oldPassword, string newPassword)
         {
-            User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
-            if(VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
-            {
-                CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
-                 _context.User.Update(user);
-                 await _context.SaveChangesAsync();
-            }
+           
+                User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
+                if(VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
+                {
+                    CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+                    user.PasswordHash = passwordHash;
+                    user.PasswordSalt = passwordSalt;
+                    _context.User.Update(user);
+                    await _context.SaveChangesAsync();
+                }
         }
     }
 }

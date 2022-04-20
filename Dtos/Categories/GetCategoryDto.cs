@@ -1,6 +1,6 @@
-namespace diplomski_backend.Dtos.Category
+namespace diplomski_backend.Dtos.Categories
 {
-    public class UpdateCategoryDto
+    public class GetCategoryDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
