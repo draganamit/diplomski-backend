@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Lj+5Me/t1Upcnhyc4mdkuz2fMclgVkSIIbDzJ+a2epgT+PpwxN2D/QCti5NoL3Zl4XyDACvy/Yv0Ik/O7j51Ig==",
+  "dgSpecHash": "m4VBxu6z4us/k0a9xFCYoiT2DxWpYaaFn9b8I1yyYD/rr7irOdAbLNjETLWwQKbwSqac43ifCvI3jpAMuPZlGQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\draga\\source\\repos\\diplomski-backend\\diplomski-backend.csproj",
   "expectedPackageFiles": [
@@ -105,8 +105,7 @@
     "C:\\Users\\draga\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\draga\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\draga\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\draga\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\draga\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.23\\microsoft.netcore.app.host.win-x64.3.1.23.nupkg.sha512"
+    "C:\\Users\\draga\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }

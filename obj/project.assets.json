@@ -5779,11 +5779,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\draga\\source\\repos\\diplomski-backend\\diplomski-backend.csproj",
+      "projectUniqueName": "C:\\Users\\draga\\source\\repos\\diplomski-backend\\diplomski-backend.csproj",
       "projectName": "diplomski-backend",
-      "projectPath": "c:\\Users\\draga\\source\\repos\\diplomski-backend\\diplomski-backend.csproj",
+      "projectPath": "C:\\Users\\draga\\source\\repos\\diplomski-backend\\diplomski-backend.csproj",
       "packagesPath": "C:\\Users\\draga\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\draga\\source\\repos\\diplomski-backend\\obj\\",
+      "outputPath": "C:\\Users\\draga\\source\\repos\\diplomski-backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\draga\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5849,12 +5849,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[3.1.23, 3.1.23]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"

@@ -7,11 +7,12 @@ namespace diplomski_backend.Services.ProductService
 {
     public interface IProductService
     {
-         public Task<ServiceResponse<List<GetProductDto>>> GetAllProduct();
-         public Task<ServiceResponse<GetProductDto>> GetProductById(int id);
-         public Task<ServiceResponse<List<GetProductDto>>> AddProduct(AddProductDto newProduct);
-         public Task<ServiceResponse<GetProductDto>> UpdateProduct(UpdateProductDto updatedProduct);
-         public Task<ServiceResponse<List<GetProductDto>>> DeleteProduct(int id);
+         public Task<ServiceResponse<List<GetProductWithUserDto>>> GetAllProduct();
+         public Task<ServiceResponse<GetProductWithUserDto>> GetProductById(int id);
+         public Task<ServiceResponse<List<GetProductWithUserDto>>> AddProduct(AddProductDto newProduct);
+         public Task<ServiceResponse<GetProductWithUserDto>> UpdateProduct(UpdateProductDto updatedProduct);
+         public Task<ServiceResponse<List<GetProductWithUserDto>>> DeleteProduct(int id);
+         public Task<ServiceResponse<List<GetProductWithUserDto>>> GetAllUserProducts();
 
     }
 }

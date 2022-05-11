@@ -136,34 +136,34 @@ namespace diplomski_backend.Data
 
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
+        public async Task<ServiceResponse<List<GetUserWithProductDto>>> GetAllUsers()
         {
-            ServiceResponse<List<GetUserDto>> response = new ServiceResponse<List<GetUserDto>>();
-            List<User> users = await _context.User.ToListAsync();
-            response.Data = _mapper.Map<List<GetUserDto>>(users).ToList();
+            ServiceResponse<List<GetUserWithProductDto>> response = new ServiceResponse<List<GetUserWithProductDto>>();
+            List<User> users = await _context.User.Include(u => u.Products).ToListAsync();
+            response.Data = _mapper.Map<List<GetUserWithProductDto>>(users).ToList();
             return response;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> GetUserById(int id)
+        public async Task<ServiceResponse<GetUserWithProductDto>> GetUserById(int id)
         {
-            ServiceResponse<GetUserDto> response = new ServiceResponse<GetUserDto>();
-            User user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
-            response.Data = _mapper.Map<GetUserDto>(user);
+            ServiceResponse<GetUserWithProductDto> response = new ServiceResponse<GetUserWithProductDto>();
+            User user = await _context.User.Include(u => u.Products).FirstOrDefaultAsync(u => u.Id == id);
+            response.Data = _mapper.Map<GetUserWithProductDto>(user);
             return response;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser)
+        public async Task<ServiceResponse<GetUserWithProductDto>> UpdateUser(UpdateUserDto updatedUser)
         {
-            ServiceResponse<GetUserDto> response = new ServiceResponse<GetUserDto>();
+            ServiceResponse<GetUserWithProductDto> response = new ServiceResponse<GetUserWithProductDto>();
             try
             {
-                User user = await _context.User.FirstOrDefaultAsync(x => x.Id == updatedUser.Id);
+                User user = await _context.User.Include(u => u.Products).FirstOrDefaultAsync(u => u.Id == updatedUser.Id);
                 user.Name = updatedUser.Name;
                 user.Surname = updatedUser.Surname;
                 user.Location = updatedUser.Location;
                 _context.User.Update(user);
                 await _context.SaveChangesAsync();
-                response.Data = _mapper.Map<GetUserDto>(user);
+                response.Data = _mapper.Map<GetUserWithProductDto>(user);
             }
             catch(Exception ex)
             {
@@ -173,16 +173,16 @@ namespace diplomski_backend.Data
             return response;
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id)
+        public async Task<ServiceResponse<List<GetUserWithProductDto>>> DeleteUser(int id)
         {
-            ServiceResponse<List<GetUserDto>> response = new ServiceResponse<List<GetUserDto>>();
+            ServiceResponse<List<GetUserWithProductDto>> response = new ServiceResponse<List<GetUserWithProductDto>>();
             try
             {
-                 User user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
+                 User user = await _context.User.FirstOrDefaultAsync(u => u.Id == id);
                 _context.User.Remove(user);
                 await _context.SaveChangesAsync();
-                List<User> users = await _context.User.ToListAsync();
-                response.Data = _mapper.Map<List<GetUserDto>>(users).ToList();
+                List<User> users = await _context.User.Include(u => u.Products).ToListAsync();
+                response.Data = _mapper.Map<List<GetUserWithProductDto>>(users).ToList();
             }
            catch(Exception ex)
            {
@@ -192,19 +192,19 @@ namespace diplomski_backend.Data
             return response;
         }
 
-        public async Task<ServiceResponse<GetUserDto>> UpdateUserByUser(UpdateUserDto updatedUser)
+        public async Task<ServiceResponse<GetUserWithProductDto>> UpdateUserByUser(UpdateUserDto updatedUser)
         {
-            ServiceResponse<GetUserDto> response = new ServiceResponse<GetUserDto>();
+            ServiceResponse<GetUserWithProductDto> response = new ServiceResponse<GetUserWithProductDto>();
             try
             {
-                User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
+                User user = await _context.User.Include(u => u.Products).FirstOrDefaultAsync(u => u.Id == GetUserId());
                 user.Name = updatedUser.Name;
                 user.Surname = updatedUser.Surname;
                 user.Location = updatedUser.Location;
                 _context.User.Update(user);
                 await _context.SaveChangesAsync();
 
-                response.Data = _mapper.Map<GetUserDto>(user);
+                response.Data = _mapper.Map<GetUserWithProductDto>(user);
 
             }
             catch(Exception ex)
@@ -216,17 +216,17 @@ namespace diplomski_backend.Data
 
         }
 
-        public async Task<ServiceResponse<List<GetUserDto>>> DeleteUserByUser()
+        public async Task<ServiceResponse<List<GetUserWithProductDto>>> DeleteUserByUser()
         {
-            ServiceResponse<List<GetUserDto>> response = new ServiceResponse<List<GetUserDto>>();
+            ServiceResponse<List<GetUserWithProductDto>> response = new ServiceResponse<List<GetUserWithProductDto>>();
             try
             {
                 User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
                 _context.User.Remove(user);
                 await _context.SaveChangesAsync();
                 
-                List<User> users = await _context.User.ToListAsync();
-                response.Data = _mapper.Map<List<GetUserDto>>(users).ToList();
+                List<User> users = await _context.User.Include(u => u.Products).ToListAsync();
+                response.Data = _mapper.Map<List<GetUserWithProductDto>>(users).ToList();
             }
             catch(Exception ex)
             {

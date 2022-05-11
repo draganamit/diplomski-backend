@@ -1,3 +1,4 @@
+using diplomski_backend.Dtos.Categories;
 using diplomski_backend.Models;
 
 namespace diplomski_backend.Dtos.Products
@@ -7,6 +8,6 @@ namespace diplomski_backend.Dtos.Products
         public string Name { get; set; }
         public string Description { get; set; }
         public int State { get; set; }
-        public Category Category { get; set; }
+        public GetCategoryDto Category { get; set; }
     }
 }

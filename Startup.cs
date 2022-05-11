@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using diplomski_backend.Services.CategoryService;
 using Microsoft.AspNetCore.Http;
+using diplomski_backend.Services.ProductService;
 
 namespace diplomski_backend
 {
@@ -37,6 +38,7 @@ namespace diplomski_backend
             services.AddAutoMapper(typeof (Startup));
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {

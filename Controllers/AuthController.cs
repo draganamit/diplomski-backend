@@ -45,7 +45,7 @@ namespace diplomski_backend.Controllers
        [HttpGet("GetAll")]
        public async Task<IActionResult> GetAllUsers()
        {
-           ServiceResponse<List<GetUserDto>> response = await _authRepo.GetAllUsers();
+           ServiceResponse<List<GetUserWithProductDto>> response = await _authRepo.GetAllUsers();
            if(response.Data == null)
            {
                return NotFound(response);
@@ -56,7 +56,7 @@ namespace diplomski_backend.Controllers
        [HttpGet("{id}")]
        public async Task<IActionResult> GetUserById(int id)
        {
-           ServiceResponse<GetUserDto> response = await _authRepo.GetUserById(id);
+           ServiceResponse<GetUserWithProductDto> response = await _authRepo.GetUserById(id);
            if(response.Data == null)
            {
                return NotFound(response);
@@ -67,7 +67,7 @@ namespace diplomski_backend.Controllers
        [HttpPut]
        public async Task<IActionResult> UpdateUser(UpdateUserDto updatedUser)
        {
-           ServiceResponse<GetUserDto> response = await _authRepo.UpdateUser(updatedUser);
+           ServiceResponse<GetUserWithProductDto> response = await _authRepo.UpdateUser(updatedUser);
            if(response.Data == null)
            {
                return NotFound(response);
@@ -78,7 +78,7 @@ namespace diplomski_backend.Controllers
         [HttpDelete("{id}")]
        public async Task<IActionResult> DeleteUser(int id)
        {
-           ServiceResponse<List<GetUserDto>> response = await _authRepo.DeleteUser(id);
+           ServiceResponse<List<GetUserWithProductDto>> response = await _authRepo.DeleteUser(id);
            if(response.Data == null)
            {
                return NotFound(response);
@@ -89,7 +89,7 @@ namespace diplomski_backend.Controllers
        [HttpPut("UpdateByUser")]
        public async Task<IActionResult> UpdateUserByUser(UpdateUserDto updateUserDto)
        {
-           ServiceResponse<GetUserDto> response = await _authRepo.UpdateUserByUser(updateUserDto);
+           ServiceResponse<GetUserWithProductDto> response = await _authRepo.UpdateUserByUser(updateUserDto);
            if(response.Data == null)
            {
                return NotFound(response);
@@ -100,7 +100,7 @@ namespace diplomski_backend.Controllers
        [HttpDelete("DeleteByUser")]
        public async Task<IActionResult> DeleteUserByUser()
        {
-           ServiceResponse<List<GetUserDto>> response = await _authRepo.DeleteUserByUser();
+           ServiceResponse<List<GetUserWithProductDto>> response = await _authRepo.DeleteUserByUser();
            if(response.Data == null)
            {
                return NotFound(response);
