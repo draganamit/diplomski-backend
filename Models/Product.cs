@@ -8,6 +8,7 @@ namespace diplomski_backend.Models
         public string Images { get; set; }
         public string Tags { get; set; }
         public int State { get; set; }
+        public float Price { get; set; }
         public User User { get; set; }
         public Category Category { get; set; }
     }

@@ -34,13 +34,13 @@ namespace diplomski_backend.Services.ProductService
             try
             {
                 Product product = _mapper.Map<Product>(newProduct);
-                product.User = await _context.User.FirstOrDefaultAsync( u => u.Id == GetUserId());
+                product.User = await _context.User.FirstOrDefaultAsync(u => u.Id == GetUserId());
                 await _context.Product.AddAsync(product);
                 await _context.SaveChangesAsync();
                 //List<Product> dbProducts = await _context.Product.ToListAsync();
                 //response.Data = _mapper.Map<List<GetProductDto>>(dbProducts).ToList();
                 response.Data = (_context.Product.Where(p => p.User.Id == GetUserId()).Select(p => _mapper.Map<GetProductWithUserDto>(p))).ToList();
-               // response.Data = null;
+                // response.Data = null;
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace diplomski_backend.Services.ProductService
             try
             {
                 Product product = await _context.Product.FirstOrDefaultAsync(p => p.Id == id && p.User.Id == GetUserId());
-                if(product != null)
+                if (product != null)
                 {
                     _context.Product.Remove(product);
                     await _context.SaveChangesAsync();
@@ -67,10 +67,10 @@ namespace diplomski_backend.Services.ProductService
                 }
                 else
                 {
-                    response.Success=false;
-                    response.Message="Product not found.";
+                    response.Success = false;
+                    response.Message = "Product not found.";
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace diplomski_backend.Services.ProductService
             try
             {
                 Product product = await _context.Product.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == updatedProduct.Id);
-                if(product.User.Id == GetUserId())
+                if (product.User.Id == GetUserId())
                 {
                     product.Name = updatedProduct.Name;
                     product.Description = updatedProduct.Description;
@@ -129,11 +129,11 @@ namespace diplomski_backend.Services.ProductService
                 }
                 else
                 {
-                    response.Success=false;
-                    response.Message="Product not found";
+                    response.Success = false;
+                    response.Message = "Product not found";
                 }
-                
-                
+
+
             }
             catch (Exception ex)
             {
@@ -151,6 +151,24 @@ namespace diplomski_backend.Services.ProductService
                 List<Product> products = await _context.Product.Where(p => p.User.Id == GetUserId()).ToListAsync();
                 response.Data = (products.Select(p => _mapper.Map<GetProductWithUserDto>(p))).ToList();
                 //response.Data = _mapper.Map<List<GetProductDto>>(products).ToList();
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        async public Task<ServiceResponse<List<GetProductWithUserDto>>> GetProducts(ProductSearchModel searchModel)
+        {
+            ServiceResponse<List<GetProductWithUserDto>> response = new ServiceResponse<List<GetProductWithUserDto>>();
+            try
+            {
+                List<Product> products = await _context.Product.Include(p => p.User).ToListAsync();
+                response.Data = _mapper.Map<List<GetProductWithUserDto>>(products)
+                .Skip((searchModel.PageNum - 1) * searchModel.PageSize)
+                .Take(searchModel.PageSize).ToList();
             }
             catch (Exception ex)
             {

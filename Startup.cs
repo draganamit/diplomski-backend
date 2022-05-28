@@ -35,7 +35,7 @@ namespace diplomski_backend
         {
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
-            services.AddAutoMapper(typeof (Startup));
+            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
@@ -44,7 +44,7 @@ namespace diplomski_backend
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey=true,
+                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
                         .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
                     ValidateIssuer = false,
@@ -54,6 +54,12 @@ namespace diplomski_backend
             }
             );
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:8080", "http://localhost:8080/login")
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,13 +72,14 @@ namespace diplomski_backend
 
             //app.UseHttpsRedirection();
 
+            app.UseCors("MyPolicy");
             app.UseRouting();
 
             app.UseAuthentication();
 
             app.UseAuthorization();
 
-            app.UseCors("MyPolicy");
+            // app.UseCors("MyPolicy");
 
             app.UseEndpoints(endpoints =>
             {

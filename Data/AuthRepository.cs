@@ -165,9 +165,9 @@ namespace diplomski_backend.Data
                 await _context.SaveChangesAsync();
                 response.Data = _mapper.Map<GetUserWithProductDto>(user);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                response.Success=false;
+                response.Success = false;
                 response.Message = ex.Message;
             }
             return response;
@@ -178,17 +178,17 @@ namespace diplomski_backend.Data
             ServiceResponse<List<GetUserWithProductDto>> response = new ServiceResponse<List<GetUserWithProductDto>>();
             try
             {
-                 User user = await _context.User.FirstOrDefaultAsync(u => u.Id == id);
+                User user = await _context.User.FirstOrDefaultAsync(u => u.Id == id);
                 _context.User.Remove(user);
                 await _context.SaveChangesAsync();
                 List<User> users = await _context.User.Include(u => u.Products).ToListAsync();
                 response.Data = _mapper.Map<List<GetUserWithProductDto>>(users).ToList();
             }
-           catch(Exception ex)
-           {
-               response.Success = false;
-               response.Message = ex.Message;
-           }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
             return response;
         }
 
@@ -207,7 +207,7 @@ namespace diplomski_backend.Data
                 response.Data = _mapper.Map<GetUserWithProductDto>(user);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Success = false;
                 response.Message = ex.Message;
@@ -224,11 +224,11 @@ namespace diplomski_backend.Data
                 User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
                 _context.User.Remove(user);
                 await _context.SaveChangesAsync();
-                
+
                 List<User> users = await _context.User.Include(u => u.Products).ToListAsync();
                 response.Data = _mapper.Map<List<GetUserWithProductDto>>(users).ToList();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Success = false;
                 response.Message = ex.Message;
@@ -238,16 +238,33 @@ namespace diplomski_backend.Data
 
         public async Task UpdatePassword(string oldPassword, string newPassword)
         {
-           
-                User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
-                if(VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
-                {
-                    CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
-                    user.PasswordHash = passwordHash;
-                    user.PasswordSalt = passwordSalt;
-                    _context.User.Update(user);
-                    await _context.SaveChangesAsync();
-                }
+
+            User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
+            if (VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
+            {
+                CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                _context.User.Update(user);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        async public Task<ServiceResponse<GetUserWithProductDto>> GetUserByUser()
+        {
+            ServiceResponse<GetUserWithProductDto> response = new ServiceResponse<GetUserWithProductDto>();
+            try
+            {
+                User user = await _context.User.Include(u => u.Products).FirstOrDefaultAsync(u => u.Id == GetUserId());
+
+                response.Data = _mapper.Map<GetUserWithProductDto>(user);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
         }
     }
 }
