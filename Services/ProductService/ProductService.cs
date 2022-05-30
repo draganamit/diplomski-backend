@@ -160,12 +160,14 @@ namespace diplomski_backend.Services.ProductService
             return response;
         }
 
-        async public Task<ServiceResponse<List<GetProductWithUserDto>>> GetProducts(ProductSearchModel searchModel)
+        async public Task<ServiceResponse<List<GetProductWithUserDto>>> SearchProducts(ProductSearchModel searchModel)
         {
             ServiceResponse<List<GetProductWithUserDto>> response = new ServiceResponse<List<GetProductWithUserDto>>();
             try
             {
-                List<Product> products = await _context.Product.Include(p => p.User).ToListAsync();
+                List<Product> products = await _context.Product
+                .Where(p => searchModel.CategoryId == null ? true : p.Category.Id == searchModel.CategoryId)
+                .Include(p => p.User).ToListAsync();
                 response.Data = _mapper.Map<List<GetProductWithUserDto>>(products)
                 .Skip((searchModel.PageNum - 1) * searchModel.PageSize)
                 .Take(searchModel.PageSize).ToList();
@@ -177,5 +179,7 @@ namespace diplomski_backend.Services.ProductService
             }
             return response;
         }
+
+
     }
 }

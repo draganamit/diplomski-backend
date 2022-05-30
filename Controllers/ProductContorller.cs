@@ -88,12 +88,13 @@ namespace diplomski_backend.Controllers
         [HttpPost("GetProductsForIndex")]
         public async Task<IActionResult> SearchProducts(ProductSearchModel searchModel)
         {
-            ServiceResponse<List<GetProductWithUserDto>> response = await _productService.GetProducts(searchModel);
+            ServiceResponse<List<GetProductWithUserDto>> response = await _productService.SearchProducts(searchModel);
             if (response.Data == null)
             {
                 return NotFound(response);
             }
             return Ok(response);
         }
+
     }
 }
