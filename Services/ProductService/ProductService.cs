@@ -33,8 +33,10 @@ namespace diplomski_backend.Services.ProductService
             ServiceResponse<List<GetProductWithUserDto>> response = new ServiceResponse<List<GetProductWithUserDto>>();
             try
             {
+
                 Product product = _mapper.Map<Product>(newProduct);
                 product.User = await _context.User.FirstOrDefaultAsync(u => u.Id == GetUserId());
+                product.Category = await _context.Category.FirstOrDefaultAsync(c => c.Id == newProduct.CategoryId);
                 await _context.Product.AddAsync(product);
                 await _context.SaveChangesAsync();
                 //List<Product> dbProducts = await _context.Product.ToListAsync();
@@ -123,6 +125,7 @@ namespace diplomski_backend.Services.ProductService
                     product.Name = updatedProduct.Name;
                     product.Description = updatedProduct.Description;
                     product.State = updatedProduct.State;
+                    product.Category = await _context.Category.FirstOrDefaultAsync(c => c.Id == updatedProduct.CategoryId);
                     _context.Product.Update(product);
                     await _context.SaveChangesAsync();
                     response.Data = _mapper.Map<GetProductWithUserDto>(product);
@@ -169,6 +172,8 @@ namespace diplomski_backend.Services.ProductService
                 .Where(p => searchModel.CategoryId == null ? true : p.Category.Id == searchModel.CategoryId)
                 .Where(p => searchModel.PriceFrom == null || searchModel.PriceTo == null ? true : p.Price >= searchModel.PriceFrom && p.Price <= searchModel.PriceTo)
                 .Where(p => searchModel.Location == "" ? true : p.User.Location.ToLower().Contains(searchModel.Location.ToLower()))
+                .Where(p => searchModel.Name == "" ? true : p.Name.ToLower().Contains(searchModel.Name.ToLower()))
+                .Where(p => searchModel.UserId == null ? true : p.User.Id == searchModel.UserId)
                 .Include(p => p.User).ToListAsync();
                 response.Data = _mapper.Map<List<GetProductWithUserDto>>(products)
                 .Skip((searchModel.PageNum - 1) * searchModel.PageSize)

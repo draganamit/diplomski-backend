@@ -9,5 +9,8 @@ namespace diplomski_backend.Dtos.Products
         public float? PriceTo { get; set; }
 
         public string Location { get; set; }
+        public string Name { get; set; }
+        public int? UserId { get; set; }
+
     }
 }

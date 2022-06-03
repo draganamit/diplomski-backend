@@ -10,6 +10,7 @@ namespace diplomski_backend.Dtos.Products
         public int State { get; set; }
         public float Price { get; set; }
 
-        public Category Category { get; set; }
+        public int CategoryId { get; set; }
+
     }
 }
