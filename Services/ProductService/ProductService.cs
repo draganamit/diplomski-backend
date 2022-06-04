@@ -103,7 +103,7 @@ namespace diplomski_backend.Services.ProductService
             ServiceResponse<GetProductWithUserDto> response = new ServiceResponse<GetProductWithUserDto>();
             try
             {
-                Product product = await _context.Product.FirstOrDefaultAsync(x => x.Id == id);
+                Product product = await _context.Product.Include(p => p.Category).Include(p => p.User).FirstOrDefaultAsync(x => x.Id == id);
                 response.Data = _mapper.Map<GetProductWithUserDto>(product);
             }
             catch (Exception ex)
