@@ -39,7 +39,7 @@ namespace diplomski_backend.Controllers
         public async Task<IActionResult> UpdateCategory(UpdateCategoryDto updatedCategory)
         {
             ServiceResponse<GetCategoryDto> response = await _categoryService.UpdateCategory(updatedCategory);
-            if(response.Data == null)
+            if (response.Data == null)
             {
                 return NotFound(response);
             }
@@ -58,7 +58,7 @@ namespace diplomski_backend.Controllers
         public async Task<IActionResult> DeleteCategory(int id)
         {
             ServiceResponse<List<GetCategoryDto>> response = await _categoryService.DeleteCategory(id);
-            if(response.Data == null)
+            if (response.Data == null)
             {
                 return NotFound(response);
             }
