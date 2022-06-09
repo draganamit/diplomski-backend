@@ -236,7 +236,7 @@ namespace diplomski_backend.Data
             return response;
         }
 
-        public async Task UpdatePassword(string oldPassword, string newPassword)
+        public async Task<Boolean> UpdatePassword(string oldPassword, string newPassword)
         {
 
             User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
@@ -247,6 +247,11 @@ namespace diplomski_backend.Data
                 user.PasswordSalt = passwordSalt;
                 _context.User.Update(user);
                 await _context.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

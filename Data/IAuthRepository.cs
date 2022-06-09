@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using diplomski_backend.Dtos;
@@ -17,6 +18,7 @@ namespace diplomski_backend.Data
         public Task<ServiceResponse<List<GetUserWithProductDto>>> DeleteUserByUser();
         public Task<ServiceResponse<GetUserWithProductDto>> GetUserByUser();
 
-        public Task UpdatePassword(string oldPassword, string newPassword);
+        public Task<Boolean> UpdatePassword(string oldPassword, string newPassword);
+
     }
 }
