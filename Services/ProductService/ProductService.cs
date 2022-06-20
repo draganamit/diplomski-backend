@@ -174,10 +174,17 @@ namespace diplomski_backend.Services.ProductService
                 .Where(p => searchModel.Location == "" ? true : p.User.Location.ToLower().Contains(searchModel.Location.ToLower()))
                 .Where(p => searchModel.Name == "" ? true : p.Name.ToLower().Contains(searchModel.Name.ToLower()))
                 .Where(p => searchModel.UserId == null ? true : p.User.Id == searchModel.UserId)
-                .Include(p => p.User).ToListAsync();
-                response.Data = _mapper.Map<List<GetProductWithUserDto>>(products)
-                .Skip((searchModel.PageNum - 1) * searchModel.PageSize)
-                .Take(searchModel.PageSize).ToList();
+                .Include(p => p.User).Skip((searchModel.PageNum - 1) * searchModel.PageSize)
+                .Take(searchModel.PageSize).ToListAsync();
+                response.Data = _mapper.Map<List<GetProductWithUserDto>>(products);
+                response.TotalCount = await _context.Product
+                .Where(p => searchModel.CategoryId == null ? true : p.Category.Id == searchModel.CategoryId)
+                .Where(p => searchModel.PriceFrom == null || searchModel.PriceTo == null ? true : p.Price >= searchModel.PriceFrom && p.Price <= searchModel.PriceTo)
+                .Where(p => searchModel.Location == "" ? true : p.User.Location.ToLower().Contains(searchModel.Location.ToLower()))
+                .Where(p => searchModel.Name == "" ? true : p.Name.ToLower().Contains(searchModel.Name.ToLower()))
+                .Where(p => searchModel.UserId == null ? true : p.User.Id == searchModel.UserId)
+                .CountAsync();
+
             }
             catch (Exception ex)
             {

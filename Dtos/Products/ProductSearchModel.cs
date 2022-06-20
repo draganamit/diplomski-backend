@@ -12,5 +12,6 @@ namespace diplomski_backend.Dtos.Products
         public string Name { get; set; }
         public int? UserId { get; set; }
 
+
     }
 }
