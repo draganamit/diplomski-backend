@@ -15,8 +15,12 @@ namespace backend_user_post
             CreateMap<User, GetUserDto>().ReverseMap();
             CreateMap<User, GetUserWithProductDto>();
             CreateMap<Product, GetProductDto>();
-            CreateMap<Product, GetProductWithUserDto>();
+            CreateMap<Product, GetProductWithUserDto>()
+            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Split(";", System.StringSplitOptions.None)));
             CreateMap<AddProductDto, Product>();
+            CreateMap<AddProductDto, Product>()
+            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => string.Join(";", src.Tags)));
+
         }
     }
 }

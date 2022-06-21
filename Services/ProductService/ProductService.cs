@@ -35,14 +35,14 @@ namespace diplomski_backend.Services.ProductService
             {
 
                 Product product = _mapper.Map<Product>(newProduct);
+
                 product.User = await _context.User.FirstOrDefaultAsync(u => u.Id == GetUserId());
                 product.Category = await _context.Category.FirstOrDefaultAsync(c => c.Id == newProduct.CategoryId);
                 await _context.Product.AddAsync(product);
                 await _context.SaveChangesAsync();
-                //List<Product> dbProducts = await _context.Product.ToListAsync();
-                //response.Data = _mapper.Map<List<GetProductDto>>(dbProducts).ToList();
+
                 response.Data = (_context.Product.Where(p => p.User.Id == GetUserId()).Select(p => _mapper.Map<GetProductWithUserDto>(p))).ToList();
-                // response.Data = null;
+
             }
             catch (Exception ex)
             {
@@ -104,7 +104,9 @@ namespace diplomski_backend.Services.ProductService
             try
             {
                 Product product = await _context.Product.Include(p => p.Category).Include(p => p.User).FirstOrDefaultAsync(x => x.Id == id);
+
                 response.Data = _mapper.Map<GetProductWithUserDto>(product);
+
             }
             catch (Exception ex)
             {

@@ -11,6 +11,7 @@ namespace diplomski_backend.Dtos.Products
         public float Price { get; set; }
 
         public int CategoryId { get; set; }
+        public string[] Tags { get; set; }
 
     }
 }
