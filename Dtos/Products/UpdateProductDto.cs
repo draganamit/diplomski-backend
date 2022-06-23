@@ -9,6 +9,7 @@ namespace diplomski_backend.Dtos.Products
         public string Description { get; set; }
         public int State { get; set; }
         public float Price { get; set; }
+        public string[] Tags { get; set; }
 
         public int CategoryId { get; set; }
 

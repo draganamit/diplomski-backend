@@ -20,6 +20,8 @@ namespace backend_user_post
             CreateMap<AddProductDto, Product>();
             CreateMap<AddProductDto, Product>()
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => string.Join(";", src.Tags)));
+            CreateMap<UpdateProductDto, Product>()
+            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => string.Join(";", src.Tags)));
 
         }
     }

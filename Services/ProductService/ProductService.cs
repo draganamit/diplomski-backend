@@ -124,9 +124,13 @@ namespace diplomski_backend.Services.ProductService
                 Product product = await _context.Product.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == updatedProduct.Id);
                 if (product.User.Id == GetUserId())
                 {
-                    product.Name = updatedProduct.Name;
-                    product.Description = updatedProduct.Description;
-                    product.State = updatedProduct.State;
+                    Product updateProduct = _mapper.Map<Product>(updatedProduct);
+
+                    product.Name = updateProduct.Name;
+                    product.Description = updateProduct.Description;
+                    product.State = updateProduct.State;
+                    product.Price = updatedProduct.Price;
+                    product.Tags = updateProduct.Tags;
                     product.Category = await _context.Category.FirstOrDefaultAsync(c => c.Id == updatedProduct.CategoryId);
                     _context.Product.Update(product);
                     await _context.SaveChangesAsync();
