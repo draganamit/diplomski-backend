@@ -18,6 +18,7 @@ using System.Text;
 using diplomski_backend.Services.CategoryService;
 using Microsoft.AspNetCore.Http;
 using diplomski_backend.Services.ProductService;
+using diplomski_backend.Services.OrderService;
 
 namespace diplomski_backend
 {
@@ -39,6 +40,8 @@ namespace diplomski_backend
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOrderService, OrderService>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
