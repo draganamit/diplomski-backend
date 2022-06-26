@@ -10,6 +10,8 @@ namespace diplomski_backend.Services.OrderService
         public Task<ServiceResponse<List<GetOrderDto>>> AddOrder(AddOrderDto newOrder);
         public Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersByUser();
         public Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersForUser();
+        public Task<ServiceResponse<GetOrderDto>> GetOrderById(int id);
+
 
 
 

@@ -18,6 +18,28 @@ namespace diplomski_backend.Controllers
             _orderService = orderService;
 
         }
+        [HttpPost]
+        public async Task<IActionResult> AddOrder(AddOrderDto newOrder)
+        {
+            ServiceResponse<List<GetOrderDto>> response = await _orderService.AddOrder(newOrder);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderById(int id)
+        {
+            ServiceResponse<GetOrderDto> response = await _orderService.GetOrderById(id);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+
         [HttpGet("GetByUser")]
         public async Task<IActionResult> GetAllOrdersByUser()
         {
@@ -28,6 +50,7 @@ namespace diplomski_backend.Controllers
             }
             return Ok(response);
         }
+
         [HttpGet("GetForUser")]
         public async Task<IActionResult> GetAllOrdersForUser()
         {
