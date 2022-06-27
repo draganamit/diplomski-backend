@@ -6,5 +6,7 @@ namespace diplomski_backend.Dtos.Orders
         //public int UserSellerId { get; set; }
         //public int UserBuyerId { get; set; }
         public bool Confirm { get; set; }
+        public string Telephone { get; set; }
+        public string Address { get; set; }
     }
 }

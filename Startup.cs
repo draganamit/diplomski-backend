@@ -19,6 +19,7 @@ using diplomski_backend.Services.CategoryService;
 using Microsoft.AspNetCore.Http;
 using diplomski_backend.Services.ProductService;
 using diplomski_backend.Services.OrderService;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace diplomski_backend
 {
@@ -66,7 +67,7 @@ namespace diplomski_backend
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ICorsService corsService, ICorsPolicyProvider corsPolicyProvider)
         {
             if (env.IsDevelopment())
             {
@@ -74,6 +75,19 @@ namespace diplomski_backend
             }
 
             //app.UseHttpsRedirection();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ServeUnknownFileTypes = true,
+                OnPrepareResponse = async (ctx) =>
+                {
+                    CorsPolicy policy = await corsPolicyProvider.GetPolicyAsync(ctx.Context, "MyPolicy");
+
+                    CorsResult result = corsService.EvaluatePolicy(ctx.Context, policy);
+
+                    corsService.ApplyResult(result, ctx.Context.Response);
+                }
+            });
 
             app.UseCors("MyPolicy");
             app.UseRouting();

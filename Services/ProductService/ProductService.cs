@@ -131,6 +131,7 @@ namespace diplomski_backend.Services.ProductService
                     product.State = updateProduct.State;
                     product.Price = updatedProduct.Price;
                     product.Tags = updateProduct.Tags;
+                    product.Images = updateProduct.Images;
                     product.Category = await _context.Category.FirstOrDefaultAsync(c => c.Id == updatedProduct.CategoryId);
                     _context.Product.Update(product);
                     await _context.SaveChangesAsync();

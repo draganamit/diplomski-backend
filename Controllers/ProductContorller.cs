@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using diplomski_backend.Dtos.Products;
 using diplomski_backend.Models;
@@ -42,8 +45,35 @@ namespace diplomski_backend.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct(UpdateProductDto updatedProduct)
+        public async Task<IActionResult> UpdateProduct([FromForm] UpdateProductDto updatedProduct)
         {
+            var files = Request.Form.Files;
+
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                if (files[i].Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(files[i].ContentDisposition).FileName.Trim('"');
+                    var extension = Path.GetExtension(fileName);
+
+                    var diskFileName = Guid.NewGuid().ToString();
+                    if (extension != null)
+                        diskFileName += extension;
+
+                    var fullPath = Path.Combine("wwwroot/Images", diskFileName);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        files[i].CopyTo(stream);
+                    }
+                    updatedProduct.Images.Add(diskFileName);
+
+                    //return Ok(diskFileName);
+                }
+
+
+            }
             ServiceResponse<GetProductWithUserDto> response = await _productService.UpdateProduct(updatedProduct);
             if (response.Data == null)
             {
@@ -53,9 +83,39 @@ namespace diplomski_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(AddProductDto newProduct)
+        public async Task<IActionResult> AddProduct([FromForm] AddProductDto newProduct)
         {
+            var files = Request.Form.Files;
+
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                if (files[i].Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(files[i].ContentDisposition).FileName.Trim('"');
+                    var extension = Path.GetExtension(fileName);
+
+                    var diskFileName = Guid.NewGuid().ToString();
+                    if (extension != null)
+                        diskFileName += extension;
+
+                    var fullPath = Path.Combine("wwwroot/Images", diskFileName);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        files[i].CopyTo(stream);
+                    }
+                    newProduct.Images.Add(diskFileName);
+
+                    //return Ok(diskFileName);
+                }
+
+
+            }
+
             ServiceResponse<List<GetProductWithUserDto>> response = await _productService.AddProduct(newProduct);
+
+
             if (response.Data == null)
             {
                 return NotFound(response);
