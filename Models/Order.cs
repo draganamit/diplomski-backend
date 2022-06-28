@@ -4,7 +4,7 @@ namespace diplomski_backend.Models
     {
         public int Id { get; set; }
         public Product Product { get; set; }
-        //public User UserSeller { get; set; }
+        public int Quantity { get; set; }
         public User UserBuyer { get; set; }
         public bool Confirm { get; set; } = false;
         public string Telephone { get; set; }

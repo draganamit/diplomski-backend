@@ -56,7 +56,7 @@ namespace diplomski_backend.Services.OrderService
             ServiceResponse<List<GetOrderDto>> response = new ServiceResponse<List<GetOrderDto>>();
             try
             {
-                List<Order> orders = await _context.Order.Where(p => p.UserBuyer.Id == GetUserId()).Include(p => p.Product).ToListAsync();
+                List<Order> orders = await _context.Order.Where(p => p.UserBuyer.Id == GetUserId()).Include(p => p.Product).Include(p => p.Product.User).ToListAsync();
                 response.Data = _mapper.Map<List<GetOrderDto>>(orders).ToList();
             }
             catch (Exception ex)
