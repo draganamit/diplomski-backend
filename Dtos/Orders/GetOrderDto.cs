@@ -4,6 +4,8 @@ namespace diplomski_backend.Dtos.Orders
 {
     public class GetOrderDto
     {
+        public int Id { get; set; }
+
         public GetProductWithUserDto Product { get; set; }
         public GetUserDto UserBuyer { get; set; }
         public int Quantity { get; set; }

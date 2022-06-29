@@ -87,7 +87,7 @@ namespace diplomski_backend.Services.OrderService
             ServiceResponse<GetOrderDto> response = new ServiceResponse<GetOrderDto>();
             try
             {
-                Order order = await _context.Order.Include(p => p.Product).Include(p => p.UserBuyer).FirstOrDefaultAsync(o => o.Id == id);
+                Order order = await _context.Order.Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).FirstOrDefaultAsync(o => o.Id == id);
 
                 response.Data = _mapper.Map<GetOrderDto>(order);
 
