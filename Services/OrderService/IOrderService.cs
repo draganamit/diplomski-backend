@@ -11,6 +11,8 @@ namespace diplomski_backend.Services.OrderService
         public Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersByUser();
         public Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersForUser();
         public Task<ServiceResponse<GetOrderDto>> GetOrderById(int id);
+        public Task<ServiceResponse<GetOrderDto>> SetConfirm(setConfirmDto newConfirm);
+        public Task<ServiceResponse<List<GetOrderDto>>> DeleteOrder(int id);
 
 
 

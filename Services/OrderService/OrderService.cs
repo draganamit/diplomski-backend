@@ -99,6 +99,58 @@ namespace diplomski_backend.Services.OrderService
             }
             return response;
         }
+
+
+
+        public async Task<ServiceResponse<GetOrderDto>> SetConfirm(setConfirmDto newConfirm)
+        {
+            ServiceResponse<GetOrderDto> response = new ServiceResponse<GetOrderDto>();
+            try
+            {
+                Order order = await _context.Order.Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).FirstOrDefaultAsync(o => o.Id == newConfirm.IdOrder);
+                order.Confirm = newConfirm.Confirm;
+                _context.Order.Update(order);
+                await _context.SaveChangesAsync();
+                response.Data = _mapper.Map<GetOrderDto>(order);
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+
+        }
+
+        public async Task<ServiceResponse<List<GetOrderDto>>> DeleteOrder(int id)
+        {
+            ServiceResponse<List<GetOrderDto>> response = new ServiceResponse<List<GetOrderDto>>();
+            try
+            {
+                Order order = await _context.Order.FirstOrDefaultAsync(o => o.Id == id);
+                if (order != null)
+                {
+                    _context.Order.Remove(order);
+                    await _context.SaveChangesAsync();
+
+                    List<Order> orders = await _context.Order.Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).ToListAsync();
+                    response.Data = _mapper.Map<List<GetOrderDto>>(orders).ToList();
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Product not found.";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
     }
 
 }

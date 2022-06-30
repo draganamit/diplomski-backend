@@ -28,6 +28,26 @@ namespace diplomski_backend.Controllers
             }
             return Ok(response);
         }
+        [HttpPut]
+        public async Task<IActionResult> SetConfirm(setConfirmDto newConfirm)
+        {
+            ServiceResponse<GetOrderDto> response = await _orderService.SetConfirm(newConfirm);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            ServiceResponse<List<GetOrderDto>> response = await _orderService.DeleteOrder(id);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderById(int id)
