@@ -110,6 +110,9 @@ namespace diplomski_backend.Services.OrderService
                 Order order = await _context.Order.Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).FirstOrDefaultAsync(o => o.Id == newConfirm.IdOrder);
                 order.Confirm = newConfirm.Confirm;
                 _context.Order.Update(order);
+                Product product = await _context.Product.FirstOrDefaultAsync(p => p.Id == order.Product.Id);
+                product.State = product.State - order.Quantity;
+                _context.Product.Update(product);
                 await _context.SaveChangesAsync();
                 response.Data = _mapper.Map<GetOrderDto>(order);
 
