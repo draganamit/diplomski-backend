@@ -11,7 +11,7 @@ namespace diplomski_backend.Models
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public TypeUser Type { get; set; } = TypeUser.RegUser;
+        public TypeUser Type { get; set; } = TypeUser.User;
         public List<Product> Products { get; set; }
         public bool IsDeleted { get; set; } = false;
     }

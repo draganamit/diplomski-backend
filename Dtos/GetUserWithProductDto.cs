@@ -13,5 +13,7 @@ namespace diplomski_backend.Dtos
         public bool IsDeleted { get; set; }
 
         public List<GetProductDto> Products { get; set; }
+        public int Type { get; set; }
+
     }
 }

@@ -176,6 +176,7 @@ namespace diplomski_backend.Services.ProductService
             try
             {
                 List<Product> products = await _context.Product
+                .Where(p => p.User.IsDeleted == false)
                 .Where(p => searchModel.CategoryId == null ? true : p.Category.Id == searchModel.CategoryId)
                 .Where(p => searchModel.PriceFrom == null || searchModel.PriceTo == null ? true : p.Price >= searchModel.PriceFrom && p.Price <= searchModel.PriceTo)
                 .Where(p => searchModel.Location == "" ? true : p.User.Location.ToLower().Contains(searchModel.Location.ToLower()))
