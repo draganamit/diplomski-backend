@@ -13,5 +13,6 @@ namespace diplomski_backend.Models
         public byte[] PasswordSalt { get; set; }
         public TypeUser Type { get; set; } = TypeUser.RegUser;
         public List<Product> Products { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

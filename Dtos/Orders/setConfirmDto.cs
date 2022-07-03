@@ -1,6 +1,6 @@
 namespace diplomski_backend.Dtos.Orders
 {
-    public class setConfirmDto
+    public class SetConfirmDto
     {
         public int IdOrder { get; set; }
         public bool Confirm { get; set; }

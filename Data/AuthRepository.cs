@@ -35,7 +35,7 @@ namespace diplomski_backend.Data
         {
             ServiceResponse<string> response = new ServiceResponse<string>();
             User user = await _context.User.FirstOrDefaultAsync(x => x.Email.ToLower().Equals(email.ToLower()));
-            if (user == null)
+            if (user == null || user.IsDeleted == true)
             {
                 response.Success = false;
                 response.Message = "User not found.";
@@ -270,6 +270,18 @@ namespace diplomski_backend.Data
                 response.Message = ex.Message;
             }
             return response;
+        }
+
+        async public Task<ServiceResponse<GetUserWithProductDto>> BlockUser(int id)
+        {
+            ServiceResponse<GetUserWithProductDto> response = new ServiceResponse<GetUserWithProductDto>();
+            User user = await _context.User.Include(u => u.Products).FirstOrDefaultAsync(u => u.Id == id);
+            user.IsDeleted = !user.IsDeleted;
+            _context.User.Update(user);
+            await _context.SaveChangesAsync();
+            response.Data = _mapper.Map<GetUserWithProductDto>(user);
+            return response;
+
         }
     }
 }

@@ -29,7 +29,7 @@ namespace diplomski_backend.Controllers
             return Ok(response);
         }
         [HttpPut]
-        public async Task<IActionResult> SetConfirm(setConfirmDto newConfirm)
+        public async Task<IActionResult> SetConfirm(SetConfirmDto newConfirm)
         {
             ServiceResponse<GetOrderDto> response = await _orderService.SetConfirm(newConfirm);
             if (response.Data == null)

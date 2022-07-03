@@ -63,6 +63,16 @@ namespace diplomski_backend.Controllers
             }
             return Ok(response);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> BlockUser(int id)
+        {
+            ServiceResponse<GetUserWithProductDto> response = await _authRepo.BlockUser(id);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
 
         [HttpPut]
         public async Task<IActionResult> UpdateUser(UpdateUserDto updatedUser)

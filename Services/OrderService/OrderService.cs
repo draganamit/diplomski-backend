@@ -102,7 +102,7 @@ namespace diplomski_backend.Services.OrderService
 
 
 
-        public async Task<ServiceResponse<GetOrderDto>> SetConfirm(setConfirmDto newConfirm)
+        public async Task<ServiceResponse<GetOrderDto>> SetConfirm(SetConfirmDto newConfirm)
         {
             ServiceResponse<GetOrderDto> response = new ServiceResponse<GetOrderDto>();
             try
