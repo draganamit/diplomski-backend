@@ -1,3 +1,5 @@
+using System;
+
 namespace diplomski_backend.Dtos.Orders
 {
     public class AddOrderDto
@@ -7,5 +9,6 @@ namespace diplomski_backend.Dtos.Orders
         public bool Confirm { get; set; }
         public string Telephone { get; set; }
         public string Address { get; set; }
+
     }
 }

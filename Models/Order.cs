@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace diplomski_backend.Models
 {
     public class Order
@@ -9,5 +12,7 @@ namespace diplomski_backend.Models
         public bool Confirm { get; set; } = false;
         public string Telephone { get; set; }
         public string Address { get; set; }
+
+        public DateTime Date { get; set; }
     }
 }

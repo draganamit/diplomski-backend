@@ -34,9 +34,12 @@ namespace diplomski_backend.Services.OrderService
             ServiceResponse<List<GetOrderDto>> response = new ServiceResponse<List<GetOrderDto>>();
             try
             {
+
+
                 Order order = _mapper.Map<Order>(newOrder);
                 order.Product = await _context.Product.FirstOrDefaultAsync(p => p.Id == newOrder.ProductId);
                 order.UserBuyer = await _context.User.FirstOrDefaultAsync(u => u.Id == GetUserId());
+
                 await _context.Order.AddAsync(order);
                 await _context.SaveChangesAsync();
                 response.Data = (_context.Order.Where(p => p.UserBuyer.Id == GetUserId()).Select(p => _mapper.Map<GetOrderDto>(p))).ToList();
@@ -109,6 +112,7 @@ namespace diplomski_backend.Services.OrderService
             {
                 Order order = await _context.Order.Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).FirstOrDefaultAsync(o => o.Id == newConfirm.IdOrder);
                 order.Confirm = newConfirm.Confirm;
+                order.Date = DateTime.Now;
                 _context.Order.Update(order);
                 Product product = await _context.Product.FirstOrDefaultAsync(p => p.Id == order.Product.Id);
                 product.State = product.State - order.Quantity;
@@ -149,6 +153,39 @@ namespace diplomski_backend.Services.OrderService
             }
             catch (Exception ex)
             {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        async public Task<ServiceResponse<List<GetOrderDto>>> SearchOrders(OrderSearchModel reportSearchModel)
+        {
+            ServiceResponse<List<GetOrderDto>> response = new ServiceResponse<List<GetOrderDto>>();
+            try
+            {
+                DateTime dateFrom = new DateTime();
+                DateTime dateTo = new DateTime();
+                if (reportSearchModel.DateFrom != "" && reportSearchModel.DateTo != "")
+                {
+                    dateFrom = DateTime.Parse(reportSearchModel.DateFrom);
+                    dateTo = DateTime.Parse(reportSearchModel.DateTo);
+                }
+
+
+                List<Order> orders = await _context.Order
+                .Where(o => o.Confirm == true)
+                .Where(o => reportSearchModel.DateFrom == "" || reportSearchModel.DateTo == "" ? true : o.Date >= dateFrom && o.Date <= dateTo)
+                .Where(o => reportSearchModel.CategoryId == null ? true : o.Product.Category.Id == reportSearchModel.CategoryId)
+                .Where(o => reportSearchModel.ProductId == null ? true : o.Product.Id == reportSearchModel.ProductId)
+                .Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).Include(p => p.Product.Category)
+                .ToListAsync();
+
+                response.Data = _mapper.Map<List<GetOrderDto>>(orders);
+            }
+            catch (Exception ex)
+            {
+
                 response.Success = false;
                 response.Message = ex.Message;
             }

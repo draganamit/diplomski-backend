@@ -1,3 +1,4 @@
+using System;
 using diplomski_backend.Dtos.Products;
 
 namespace diplomski_backend.Dtos.Orders
@@ -12,6 +13,8 @@ namespace diplomski_backend.Dtos.Orders
         public bool Confirm { get; set; }
         public string Telephone { get; set; }
         public string Address { get; set; }
+        public DateTime Date { get; set; }
+
 
 
     }

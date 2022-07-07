@@ -81,6 +81,16 @@ namespace diplomski_backend.Controllers
             }
             return Ok(response);
         }
+        [HttpPost("GetOrdersForIndex")]
+        public async Task<IActionResult> SearchOrders(OrderSearchModel reportSearchModel)
+        {
+            ServiceResponse<List<GetOrderDto>> response = await _orderService.SearchOrders(reportSearchModel);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
 
     }
 }
