@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using diplomski_backend.Data;
 using diplomski_backend.Dtos;
 using diplomski_backend.Models;
+using diplomski_backend.Services.MailService;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace diplomski_backend.Controllers
 {
@@ -13,9 +17,12 @@ namespace diplomski_backend.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepo;
-        public AuthController(IAuthRepository authRepo)
+        private readonly IMailService _mailService;
+
+        public AuthController(IAuthRepository authRepo, IMailService mailService)
         {
             _authRepo = authRepo;
+            _mailService = mailService;
         }
 
         [HttpPost("Register")]
@@ -134,6 +141,20 @@ namespace diplomski_backend.Controllers
             }
             return Ok(response);
         }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> SendEmailAsync(MailRequestDto mailRequest)
+        {
+            string password = await _authRepo.ResetPassword(mailRequest.Email);
+            if (password == null)
+            {
+                return BadRequest();
+            }
+            await _mailService.SendEmailAsync(mailRequest, password);
+
+            return Ok();
+        }
+
 
     }
 }

@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Http;
 using diplomski_backend.Services.ProductService;
 using diplomski_backend.Services.OrderService;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using diplomski_backend.Services.Settings;
+using diplomski_backend.Services.MailService;
 
 namespace diplomski_backend
 {
@@ -42,7 +44,9 @@ namespace diplomski_backend
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IMailService, MailService>();
 
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {

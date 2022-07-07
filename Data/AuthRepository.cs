@@ -283,5 +283,35 @@ namespace diplomski_backend.Data
             return response;
 
         }
+        public async Task<string> ResetPassword(string email)
+        {
+            string password = CreatePassword();
+            bool userExist = await UserExists(email);
+            if (!userExist)
+            {
+                return null;
+            }
+            User user = await _context.User.FirstOrDefaultAsync(x => x.Email == email);
+            CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            _context.User.Update(user);
+            await _context.SaveChangesAsync();
+            return password;
+
+
+        }
+        private string CreatePassword()
+        {
+            int length = 8;
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder res = new StringBuilder();
+            Random rnd = new Random();
+            while (0 < length--)
+            {
+                res.Append(valid[rnd.Next(valid.Length)]);
+            }
+            return res.ToString();
+        }
     }
 }
