@@ -182,6 +182,7 @@ namespace diplomski_backend.Services.ProductService
                 .Where(p => searchModel.Location == "" ? true : p.User.Location.ToLower().Contains(searchModel.Location.ToLower()))
                 .Where(p => searchModel.Name == "" ? true : p.Name.ToLower().Contains(searchModel.Name.ToLower()) || p.Tags.ToLower().Contains(searchModel.Name.ToLower()))
                 .Where(p => searchModel.UserId == null ? true : p.User.Id == searchModel.UserId)
+                .OrderBy(p => p.Name)
                 .Include(p => p.User).Skip((searchModel.PageNum - 1) * searchModel.PageSize)
                 .Take(searchModel.PageSize).ToListAsync();
                 response.Data = _mapper.Map<List<GetProductWithUserDto>>(products);
