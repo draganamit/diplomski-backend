@@ -178,6 +178,7 @@ namespace diplomski_backend.Services.OrderService
                 .Where(o => reportSearchModel.DateFrom == "" || reportSearchModel.DateTo == "" ? true : o.Date >= dateFrom && o.Date <= dateTo)
                 .Where(o => reportSearchModel.CategoryId == null ? true : o.Product.Category.Id == reportSearchModel.CategoryId)
                 .Where(o => reportSearchModel.ProductId == null ? true : o.Product.Id == reportSearchModel.ProductId)
+                .Where(o => reportSearchModel.UserId == null ? true : reportSearchModel.Sale == "true" ? o.Product.User.Id == reportSearchModel.UserId : o.UserBuyer.Id == reportSearchModel.UserId)
                 .Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).Include(p => p.Product.Category)
                 .ToListAsync();
 

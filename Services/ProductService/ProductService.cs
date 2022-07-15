@@ -158,7 +158,7 @@ namespace diplomski_backend.Services.ProductService
             ServiceResponse<List<GetProductWithUserDto>> response = new ServiceResponse<List<GetProductWithUserDto>>();
             try
             {
-                List<Product> products = await _context.Product.Where(p => p.User.Id == GetUserId()).ToListAsync();
+                List<Product> products = await _context.Product.Include(p => p.User).Include(p => p.Category).Where(p => p.User.Id == GetUserId()).ToListAsync();
                 response.Data = (products.Select(p => _mapper.Map<GetProductWithUserDto>(p))).ToList();
                 //response.Data = _mapper.Map<List<GetProductDto>>(products).ToList();
             }
