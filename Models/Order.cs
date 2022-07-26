@@ -14,5 +14,8 @@ namespace diplomski_backend.Models
         public string Address { get; set; }
 
         public DateTime Date { get; set; }
+        public string BuyerNote { get; set; }
+        public string SellerNote { get; set; }
+
     }
 }

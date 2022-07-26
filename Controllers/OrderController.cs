@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using diplomski_backend.Dtos;
 using diplomski_backend.Dtos.Orders;
 using diplomski_backend.Models;
 using diplomski_backend.Services.OrderService;
@@ -32,6 +33,16 @@ namespace diplomski_backend.Controllers
         public async Task<IActionResult> SetConfirm(SetConfirmDto newConfirm)
         {
             ServiceResponse<GetOrderDto> response = await _orderService.SetConfirm(newConfirm);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+        [HttpPut("SetRefuseOrder")]
+        public async Task<IActionResult> SetRefuse(SetRefuseDto newRefuse)
+        {
+            ServiceResponse<GetOrderDto> response = await _orderService.SetRefuse(newRefuse);
             if (response.Data == null)
             {
                 return NotFound(response);

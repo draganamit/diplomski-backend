@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using diplomski_backend.Data;
+using diplomski_backend.Dtos;
 using diplomski_backend.Dtos.Orders;
 using diplomski_backend.Models;
 using Microsoft.AspNetCore.Http;
@@ -129,6 +130,27 @@ namespace diplomski_backend.Services.OrderService
             return response;
 
         }
+        public async Task<ServiceResponse<GetOrderDto>> SetRefuse(SetRefuseDto newRefuse)
+        {
+            ServiceResponse<GetOrderDto> response = new ServiceResponse<GetOrderDto>();
+            try
+            {
+                Order order = await _context.Order.Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).FirstOrDefaultAsync(o => o.Id == newRefuse.IdOrder);
+                order.Date = DateTime.Now;
+                order.SellerNote = newRefuse.SellerNote;
+                _context.Order.Update(order);
+                await _context.SaveChangesAsync();
+                response.Data = _mapper.Map<GetOrderDto>(order);
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+
+        }
 
         public async Task<ServiceResponse<List<GetOrderDto>>> DeleteOrder(int id)
         {
@@ -192,6 +214,8 @@ namespace diplomski_backend.Services.OrderService
             }
             return response;
         }
+
+
     }
 
 }

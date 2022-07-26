@@ -14,6 +14,8 @@ namespace diplomski_backend.Dtos.Orders
         public string Telephone { get; set; }
         public string Address { get; set; }
         public DateTime Date { get; set; }
+        public string BuyerNote { get; set; }
+        public string SellerNote { get; set; }
 
 
 
