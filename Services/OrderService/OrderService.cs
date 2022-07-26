@@ -40,6 +40,8 @@ namespace diplomski_backend.Services.OrderService
                 Order order = _mapper.Map<Order>(newOrder);
                 order.Product = await _context.Product.FirstOrDefaultAsync(p => p.Id == newOrder.ProductId);
                 order.UserBuyer = await _context.User.FirstOrDefaultAsync(u => u.Id == GetUserId());
+                order.Date = DateTime.Now;
+
 
                 await _context.Order.AddAsync(order);
                 await _context.SaveChangesAsync();
@@ -60,7 +62,7 @@ namespace diplomski_backend.Services.OrderService
             ServiceResponse<List<GetOrderDto>> response = new ServiceResponse<List<GetOrderDto>>();
             try
             {
-                List<Order> orders = await _context.Order.Where(p => p.UserBuyer.Id == GetUserId()).Include(p => p.Product).Include(p => p.Product.User).ToListAsync();
+                List<Order> orders = await _context.Order.Where(p => p.UserBuyer.Id == GetUserId()).OrderByDescending(o => o.Date).Include(p => p.Product).Include(p => p.Product.User).ToListAsync();
                 response.Data = _mapper.Map<List<GetOrderDto>>(orders).ToList();
             }
             catch (Exception ex)
@@ -76,7 +78,7 @@ namespace diplomski_backend.Services.OrderService
             ServiceResponse<List<GetOrderDto>> response = new ServiceResponse<List<GetOrderDto>>();
             try
             {
-                List<Order> orders = await _context.Order.Where(p => p.Product.User.Id == GetUserId()).Include(p => p.Product).Include(p => p.UserBuyer).ToListAsync();
+                List<Order> orders = await _context.Order.Where(p => p.Product.User.Id == GetUserId()).OrderByDescending(o => o.Date).Include(p => p.Product).Include(p => p.UserBuyer).ToListAsync();
                 response.Data = _mapper.Map<List<GetOrderDto>>(orders).ToList();
             }
             catch (Exception ex)
@@ -113,7 +115,7 @@ namespace diplomski_backend.Services.OrderService
             {
                 Order order = await _context.Order.Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).FirstOrDefaultAsync(o => o.Id == newConfirm.IdOrder);
                 order.Confirm = newConfirm.Confirm;
-                order.Date = DateTime.Now;
+                // order.Date = DateTime.Now;
                 _context.Order.Update(order);
                 Product product = await _context.Product.FirstOrDefaultAsync(p => p.Id == order.Product.Id);
                 product.State = product.State - order.Quantity;
@@ -136,7 +138,7 @@ namespace diplomski_backend.Services.OrderService
             try
             {
                 Order order = await _context.Order.Include(p => p.Product).Include(p => p.UserBuyer).Include(p => p.Product.User).FirstOrDefaultAsync(o => o.Id == newRefuse.IdOrder);
-                order.Date = DateTime.Now;
+                // order.Date = DateTime.Now;
                 order.SellerNote = newRefuse.SellerNote;
                 _context.Order.Update(order);
                 await _context.SaveChangesAsync();
