@@ -57,13 +57,17 @@ namespace diplomski_backend.Services.OrderService
 
         }
 
-        public async Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersByUser()
+        public async Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersByUser(OrderPageModel pageModel)
         {
             ServiceResponse<List<GetOrderDto>> response = new ServiceResponse<List<GetOrderDto>>();
             try
             {
-                List<Order> orders = await _context.Order.Where(p => p.UserBuyer.Id == GetUserId()).OrderByDescending(o => o.Date).Include(p => p.Product).Include(p => p.Product.User).ToListAsync();
+                List<Order> orders = await _context.Order.Where(p => p.UserBuyer.Id == GetUserId()).OrderByDescending(o => o.Date)
+                .Include(p => p.Product).Include(p => p.Product.User)
+                .Skip((pageModel.PageNum - 1) * pageModel.PageSize)
+                .Take(pageModel.PageSize).ToListAsync();
                 response.Data = _mapper.Map<List<GetOrderDto>>(orders).ToList();
+                response.TotalCount = await _context.Order.Where(p => p.UserBuyer.Id == GetUserId()).CountAsync();
             }
             catch (Exception ex)
             {
@@ -73,13 +77,18 @@ namespace diplomski_backend.Services.OrderService
             return response;
         }
 
-        public async Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersForUser()
+        public async Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersForUser(OrderPageModel pageModel)
         {
             ServiceResponse<List<GetOrderDto>> response = new ServiceResponse<List<GetOrderDto>>();
             try
             {
-                List<Order> orders = await _context.Order.Where(p => p.Product.User.Id == GetUserId()).OrderByDescending(o => o.Date).Include(p => p.Product).Include(p => p.UserBuyer).ToListAsync();
+                List<Order> orders = await _context.Order.Where(p => p.Product.User.Id == GetUserId()).OrderByDescending(o => o.Date)
+                .Include(p => p.Product).Include(p => p.UserBuyer)
+                .Skip((pageModel.PageNum - 1) * pageModel.PageSize)
+                .Take(pageModel.PageSize).ToListAsync();
                 response.Data = _mapper.Map<List<GetOrderDto>>(orders).ToList();
+                response.TotalCount = await _context.Order.Where(p => p.Product.User.Id == GetUserId()).CountAsync();
+
             }
             catch (Exception ex)
             {

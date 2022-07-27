@@ -71,10 +71,10 @@ namespace diplomski_backend.Controllers
             return Ok(response);
         }
 
-        [HttpGet("GetByUser")]
-        public async Task<IActionResult> GetAllOrdersByUser()
+        [HttpPost("GetByUser")]
+        public async Task<IActionResult> GetAllOrdersByUser(OrderPageModel pageModel)
         {
-            ServiceResponse<List<GetOrderDto>> response = await _orderService.GetAllOrdersByUser();
+            ServiceResponse<List<GetOrderDto>> response = await _orderService.GetAllOrdersByUser(pageModel);
             if (response.Data == null)
             {
                 return NotFound(response);
@@ -82,10 +82,10 @@ namespace diplomski_backend.Controllers
             return Ok(response);
         }
 
-        [HttpGet("GetForUser")]
-        public async Task<IActionResult> GetAllOrdersForUser()
+        [HttpPost("GetForUser")]
+        public async Task<IActionResult> GetAllOrdersForUser(OrderPageModel pageModel)
         {
-            ServiceResponse<List<GetOrderDto>> response = await _orderService.GetAllOrdersForUser();
+            ServiceResponse<List<GetOrderDto>> response = await _orderService.GetAllOrdersForUser(pageModel);
             if (response.Data == null)
             {
                 return NotFound(response);

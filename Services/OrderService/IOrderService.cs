@@ -9,8 +9,8 @@ namespace diplomski_backend.Services.OrderService
     public interface IOrderService
     {
         public Task<ServiceResponse<List<GetOrderDto>>> AddOrder(AddOrderDto newOrder);
-        public Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersByUser();
-        public Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersForUser();
+        public Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersByUser(OrderPageModel pageModel);
+        public Task<ServiceResponse<List<GetOrderDto>>> GetAllOrdersForUser(OrderPageModel pageModel);
         public Task<ServiceResponse<GetOrderDto>> GetOrderById(int id);
         public Task<ServiceResponse<GetOrderDto>> SetConfirm(SetConfirmDto newConfirm);
         public Task<ServiceResponse<GetOrderDto>> SetRefuse(SetRefuseDto newRefuse);
