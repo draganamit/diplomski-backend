@@ -197,7 +197,10 @@ namespace diplomski_backend.Data
             ServiceResponse<GetUserWithProductDto> response = new ServiceResponse<GetUserWithProductDto>();
             try
             {
-                User user = await _context.User.Include(u => u.Products).FirstOrDefaultAsync(u => u.Id == GetUserId());
+                // User user = await _context.User.Include(u => u.Products).FirstOrDefaultAsync(u => u.Id == GetUserId());
+
+                User user = await _context.User.Include(u => u.Products).FirstOrDefaultAsync(u => u.Id == updatedUser.Id);
+
                 user.Name = updatedUser.Name;
                 user.Surname = updatedUser.Surname;
                 user.Location = updatedUser.Location;
@@ -236,10 +239,12 @@ namespace diplomski_backend.Data
             return response;
         }
 
-        public async Task<Boolean> UpdatePassword(string oldPassword, string newPassword)
+        public async Task<Boolean> UpdatePassword(string oldPassword, string newPassword, int userId)
         {
 
-            User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
+            //User user = await _context.User.FirstOrDefaultAsync(x => x.Id == GetUserId());
+            User user = await _context.User.FirstOrDefaultAsync(x => x.Id == userId);
+
             if (VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
             {
                 CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);

@@ -128,7 +128,9 @@ namespace diplomski_backend.Controllers
         [HttpPut("UpdatePassword")]
         public async Task<IActionResult> UpdatePassword(UpdatePasswordDto updatedPassword)
         {
-            return Ok(await _authRepo.UpdatePassword(updatedPassword.OldPassword, updatedPassword.NewPassword));
+            //return Ok(await _authRepo.UpdatePassword(updatedPassword.OldPassword, updatedPassword.NewPassword));
+            return Ok(await _authRepo.UpdatePassword(updatedPassword.OldPassword, updatedPassword.NewPassword, updatedPassword.UserId));
+
         }
 
         [HttpGet("GetByUser")]

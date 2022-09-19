@@ -18,7 +18,7 @@ namespace diplomski_backend.Data
         public Task<ServiceResponse<List<GetUserWithProductDto>>> DeleteUserByUser();
         public Task<ServiceResponse<GetUserWithProductDto>> GetUserByUser();
 
-        public Task<Boolean> UpdatePassword(string oldPassword, string newPassword);
+        public Task<Boolean> UpdatePassword(string oldPassword, string newPassword, int userId);
         public Task<ServiceResponse<GetUserWithProductDto>> BlockUser(int id);
         public Task<string> ResetPassword(string email);
 
