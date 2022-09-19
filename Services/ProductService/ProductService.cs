@@ -58,7 +58,7 @@ namespace diplomski_backend.Services.ProductService
             ServiceResponse<List<GetProductWithUserDto>> response = new ServiceResponse<List<GetProductWithUserDto>>();
             try
             {
-                Product product = await _context.Product.FirstOrDefaultAsync(p => p.Id == id && p.User.Id == GetUserId());
+                Product product = await _context.Product.FirstOrDefaultAsync(p => p.Id == id);
                 if (product != null)
                 {
                     _context.Product.Remove(product);
@@ -122,7 +122,7 @@ namespace diplomski_backend.Services.ProductService
             try
             {
                 Product product = await _context.Product.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == updatedProduct.Id);
-                if (product.User.Id == GetUserId())
+                if (product != null)
                 {
                     Product updateProduct = _mapper.Map<Product>(updatedProduct);
 
