@@ -22,7 +22,7 @@ namespace diplomski_backend.Services.MailService
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
             email.To.Add(MailboxAddress.Parse(mailRequest.Email));
-            email.Subject = "Naslov";
+            email.Subject = "Zahtjev za resetovanje lozinke";
             var builder = new BodyBuilder();
 
             builder.HtmlBody = "Poslat je zahtjev za resetovanje Vaše lozinke. Vaš zahthev je uspješan. Možete se prijaviti sa novom lozinkom: <b>" + password + "</b>";

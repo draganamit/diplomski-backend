@@ -190,7 +190,7 @@ namespace diplomski_backend.Services.ProductService
                 .Where(p => searchModel.CategoryId == null ? true : p.Category.Id == searchModel.CategoryId)
                 .Where(p => searchModel.PriceFrom == null || searchModel.PriceTo == null ? true : p.Price >= searchModel.PriceFrom && p.Price <= searchModel.PriceTo)
                 .Where(p => searchModel.Location == "" ? true : p.User.Location.ToLower().Contains(searchModel.Location.ToLower()))
-                .Where(p => searchModel.Name == "" ? true : p.Name.ToLower().Contains(searchModel.Name.ToLower()))
+                .Where(p => searchModel.Name == "" ? true : p.Name.ToLower().Contains(searchModel.Name.ToLower()) || p.Tags.ToLower().Contains(searchModel.Name.ToLower()))
                 .Where(p => searchModel.UserId == null ? true : p.User.Id == searchModel.UserId)
                 .CountAsync();
 
